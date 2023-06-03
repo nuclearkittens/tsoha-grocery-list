@@ -1,3 +1,5 @@
+'''Module for initialising the application.'''
+
 from os import getenv
 
 from flask import Flask
