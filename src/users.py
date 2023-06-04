@@ -9,8 +9,8 @@ def login(username, password):
     '''Check user credentials for logging in.
 
     param:
-        username (str): name of the registered user
-        password (str): password of the registered user
+        username: str: name of the registered user
+        password: str: password of the registered user
     return:
         bool: login successful
     '''
@@ -20,6 +20,7 @@ def login(username, password):
     try:
         if check_password_hash(user.password, password):
             session['user_id'] = user.id
+            session['username'] = user.username
             return True
         else:
             print('login error: wrong password')
@@ -37,8 +38,8 @@ def register(username, password):
     '''Register new user.
 
     param:
-        username (str): name of the new user
-        password (str): password for the new account
+        username: str: name of the new user
+        password: str: password for the new account
     return:
         bool: successful login to new account.
     '''

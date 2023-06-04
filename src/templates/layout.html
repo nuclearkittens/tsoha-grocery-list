@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>grocery list app – {% block title %} {% endblock %}</title>
+    </head>
+    <body>
+        <header>
+            <h1>[this be the header]</h1>
+        </header>
+        <nav class="menu">
+            <ul>
+                <li><a href="{{ url_for('index') }}">home</a></li>
+                {% if session.username %}
+                <li><a href="{{ url_for('logout') }}">log out {{ session.username }}</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}">log in/register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <hr>
+        {% block content %} {% endblock %}
+        <hr>
+        <footer>
+            <p>Coursework for Database Application Project, University of Helsinki, Summer 2023</p>
+        </footer>
+    </body>
+</html>
