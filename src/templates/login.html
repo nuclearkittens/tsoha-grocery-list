@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 {% extends "layout.html" %}
 
+{% block title %}log in{% endblock %}
+
 {% block content %}
 <div>
     <h1>login</h1>
     <p>[this be the login page]</p>
 
     {% if session.user_id %}
-    <p>you are logged in as <b>{{ session.username }}</b> (:</p>
-    <form action="{{ url_for('logout') }}" method="post">
-        <input type="submit">log out</input>
-    </form>
+    <p>you are already logged in (:</p>
     {% else %}
     <p>no account? <a href="{{ url_for('register') }}">register</a></p>
     <form action="{{ url_for('login') }}" method="post">
@@ -20,5 +19,6 @@
         <p><input type="submit" value="log in"></p>
     </form>
     {% endif %}
+
 </div>
 {% endblock %}

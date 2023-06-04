@@ -19,18 +19,21 @@ def login(username, password, err=list()):
         tuple: login success and list of errors
     '''
 
-    sql = text('SELECT id, password FROM users WHERE username=:username')
-    user = db.session.execute(sql, {'username': username}).fetchone()
     logged_in = False
-
+    sql = text('SELECT id, password FROM users WHERE username=:username')
     try:
+        user = db.session.execute(sql, {'username': username}).fetchone()
+    except:
+        user = None
+
+    if user:
         if check_password_hash(user.password, password):
             session['user_id'] = user.id
-            session['username'] = user.username
+
             logged_in = True
         else:
             err.append('wrong_password')
-    except:
+    else:
         err.append('user_not_found')
 
     return (logged_in, err)

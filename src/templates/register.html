@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 {% extends "layout.html" %}
 
+{% block title %}register{% endblock %}
+
 {% block content %}
 <div>
     <h1>registration</h1>
     <p>[this be the registration page]</p>
+
+    {% if session.user_id %}
+    <p>you have already registered and are logged in!</p>
+    {% else %}
     <p>username: 3-16 characters, alphanumeric</p>
     <p>password: 6-32 characters, alphanumeric, both lower&uppercase</p>
     <form action="{{ url_for('register')}}" method="post">
         <p><input type="text" name="username" placeholder="username"></p>
+        <p><input type="password" name="password" placeholder="password"></p>
+        <p><input type="password" name="password_check" placeholder="retype password"></p>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <p><input type="submit" value="register"></p>
     </form>
+    {% endif %}
+
 </div>
 {% endblock %}

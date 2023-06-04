@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}error{% endblock %}
+
+{% block content %}
 <div>
     <h1>error</h1>
     <p>{{ message }}</p>
@@ -6,3 +11,4 @@
         <input type="submit" value="back to previous page">
     </form>
 </div>
+{% endblock %}
