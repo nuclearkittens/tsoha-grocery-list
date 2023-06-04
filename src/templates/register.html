@@ -9,7 +9,7 @@
     <p>[this be the registration page]</p>
 
     {% if session.user_id %}
-    <p>you have already registered and are logged in!</p>
+    <p>you have already registered and are logged in as <b>{{ session.username }}</b>!</p>
     {% else %}
     <p>username: 3-16 characters, alphanumeric</p>
     <p>password: 6-32 characters, alphanumeric, both lower&uppercase</p>

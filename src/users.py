@@ -29,6 +29,7 @@ def login(username, password, err=list()):
     if user:
         if check_password_hash(user.password, password):
             session['user_id'] = user.id
+            session['username'] = username
 
             logged_in = True
         else:
