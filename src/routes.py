@@ -17,11 +17,14 @@ def login():
 
         logged_in, err = users.login(username, password)
         if not logged_in:
-            # TODO: display correct error when failed login
             msg = ', '.join(err)
             return render_template('error.html', message=msg, prev=url_for('login'))
 
     return render_template('login.html')
+
+@app.route('/error')
+def error():
+    return render_template('error.html', message='unidentified_error', prev=url_for('index'))
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
@@ -37,11 +40,10 @@ def register():
         password = request.form['password']
         password_check = request.form['password_check']
         if password != password_check:
-            return render_template('error.html', message='passwords don\'t match ):')
+            return render_template('error.html', message='password_does_not_match', prev=url_for('register'))
 
         registered, err = users.register(username, password)
         if not registered:
-            # TODO: display correct error when failed registration
             msg = ', '.join(err)
             return render_template('error.html', message=msg, prev=url_for('register'))
 

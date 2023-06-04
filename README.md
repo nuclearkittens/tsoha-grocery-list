@@ -11,7 +11,11 @@ Main functionalities:
 Super simple, right? Not to worry, if time is kind some of the following could be included:
 + The user can share a shopping list
 + The user can edit an existing shopping list
-+ The user can add recipes (a least manually) from which the ingrediants are imported to a shopping list
++ The user can add recipes (a least manually) from which the ingredients are imported to a shopping list
 + The user can delete old shopping lists
+
+Known issues (*updated 04/06/23*):
++ Does not catch all errors correctly when trying to register
++ It ugly ':D'
 
 For my own convenience, I have created a [spreadsheet](https://docs.google.com/spreadsheets/d/17Hk51ZoDV1AqUWWAYf6MvK6ZVflhoNZ81wzrthbtHzs/) to track the project progress. It includes a roadmap/backlog of sorts, checklists for deadlines, and I will probably use it for general planning/time keeping as well.

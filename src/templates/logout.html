@@ -13,6 +13,8 @@
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <p><input type="submit" value="log out"></p>
     </form>
+    {% else %}
+    <p>you have been logged out</p>
     {% endif %}
 
 </div>
