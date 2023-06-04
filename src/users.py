@@ -90,3 +90,7 @@ def register(username, password):
 def get_user_id():
     '''Return the user id used in the current session.'''
     return session.get('user_id', 0)
+
+def get_username():
+    '''Return the username used in the current session.'''
+    return session.get('username', 0)

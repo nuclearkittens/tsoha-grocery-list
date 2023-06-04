@@ -9,8 +9,10 @@
         </header>
         <nav class="menu">
             <ul>
+                <li><a href="{{ url_for('new_list') }}">create a new grocery list</a></li>
                 <li><a href="{{ url_for('index') }}">home</a></li>
                 {% if session.user_id %}
+                <li><a href="{{ url_for('profile', username=session.username) }}">my grocery lists</a></li>
                 <li><a href="{{ url_for('logout') }}">log out {{ session.username }}</a></li>
                 {% else %}
                 <li><a href="{{ url_for('login') }}">log in/register</a></li>

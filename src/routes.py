@@ -3,6 +3,23 @@ from flask import redirect, render_template, request, url_for
 from app import app
 import users
 
+@app.before_request
+def before_request():
+    authorised = ['index', 'login', 'register']
+    endpoint = request.endpoint
+    user_id = users.get_user_id()
+
+    if endpoint in authorised:
+        return
+
+    if not user_id:
+        return redirect(url_for('login'))
+    elif '/profile' in endpoint and user_id not in endpoint:
+        return render_template('error.html', message='unauthorised', prev=url_for('index'))
+
+    return
+
+
 @app.route('/')
 def index():
     '''Render the main page.'''
@@ -48,3 +65,11 @@ def register():
             return render_template('error.html', message=msg, prev=url_for('register'))
 
     return render_template('register.html')
+
+@app.route('/profile/<string:username>')
+def profile(username):
+    return render_template('profile.html')
+
+@app.route('/new_list')
+def new_list():
+    return render_template('new_list.html')

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}{{ session.username }}{% endblock %}
+
+{% block content %}
+<div>
+    <h1>{{ session.username }}'s profile</h1>
+    <p>[here be the grocery lists]</p>
+</div>
+{% endblock %}
