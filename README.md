@@ -7,15 +7,45 @@ Main functionalities:
 + The user can create/save shopping lists
 + The user can view their previous shopping lists
 + The shopping list items are put into categories (fruit & veg, chilled food, frozen food, household items, etc.) for easier shopping
++ The user can edit an existing shopping list
++ The user can delete old shopping lists
 
 Super simple, right? Not to worry, if time is kind some of the following could be included:
 + The user can share a shopping list
-+ The user can edit an existing shopping list
 + The user can add recipes (a least manually) from which the ingredients are imported to a shopping list
-+ The user can delete old shopping lists
++ The user can delete their account
++ Unit of measurement conversion
 
 Known issues (*updated 04/06/23*):
 + Does not catch all errors correctly when trying to register
 + It ugly ':D'
 
 For my own convenience, I have created a [spreadsheet](https://docs.google.com/spreadsheets/d/17Hk51ZoDV1AqUWWAYf6MvK6ZVflhoNZ81wzrthbtHzs/) to track the project progress. It includes a roadmap/backlog of sorts, checklists for deadlines, and I will probably use it for general planning/time keeping as well.
+
+## Project progress
+
+*updated 04/06/23*
+
+The project is still very much a work in progress – only the log in/log out/register functionalities are (more or less) fully working. Lazy, me? You got it. Slowly getting into this.
+
+On the database side of things, well, nothing is really implemented in the actual project yet. Been re-familiarising myself with SQL queries and playing around before diving into the implementation, so that I have an actual idea of what I'm doing.
+
+The backlog spreadsheet has been updated, too, and I will keep using it, possibly add some more user stories if my time management allows it. The list of main functionalities (above) has been updated as well per the feedback I got on Labtool.
+
+There are absolutely no automated tests, so no guarantees of anything working. Code is fairly clean and documented, and linting is done using pylint (8.76/10 last time I checked).
+
+## Installation & instructions
+
+Start by cloning the repository (`git clone git@github.com:nuclearkittens/tsoha-grocery-list.git`) and create an `.env` file for the following environmental variables:
+
+```
+DATABASE_URL=local_path_to_the_database
+SECRET_KEY=super_secret_key_wahoo
+```
+Create a virtual environment and install dependencies:
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install -r ./requirements.txt
+```
+Assuming you've got PostgreSQL installed, you can define the database schema by `psql < schema.sql`. Within the virtual environment (you might need to navigate to the `src` directory for this to work, idk), run the application using the command `flask run`.
