@@ -13,7 +13,9 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if not users.login(username, password):
+        logged_in, _ = users.login(username, password)
+        if not logged_in:
+            # TODO: display correct error when failed login
             return render_template('error.html', message='login failed ):', prev='/login')
 
     return render_template('login.html')
