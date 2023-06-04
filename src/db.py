@@ -1,10 +1,11 @@
 '''Module for initialising the database connection.'''
 
 from os import getenv
-
 from flask_sqlalchemy import SQLAlchemy
 
-from app import app
+db = SQLAlchemy()
 
-app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
-db = SQLAlchemy(app)
+def init_db(app):
+    '''Initialise the database.'''
+    app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
+    db.init_app(app)

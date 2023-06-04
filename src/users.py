@@ -1,6 +1,7 @@
 '''Module for user account functions.'''
 
 from flask import session
+from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from db import db
@@ -14,7 +15,7 @@ def login(username, password):
     return:
         bool: login successful
     '''
-    sql = 'SELECT id, password FROM users WHERE username=:username'
+    sql = text('SELECT id, password FROM users WHERE username=:username')
     user = db.session.execute(sql, {'username': username}).fetchone()
 
     try:
@@ -44,7 +45,7 @@ def register(username, password):
         bool: successful login to new account.
     '''
     hashed_pw = generate_password_hash(password)
-    sql = 'INSERT INTO users (username, password) VALUES (:username, :password)'
+    sql = text('INSERT INTO users (username, password) VALUES (:username, :password)')
     db.session.execute(sql, {'username': username, 'password': hashed_pw})
     db.session.commit()
     return login(username, password)
