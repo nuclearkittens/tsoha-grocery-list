@@ -8,13 +8,14 @@ def before_request():
     authorised = ['index', 'login', 'register']
     endpoint = request.endpoint
     user_id = users.get_user_id()
+    username = users.get_username()
 
     if endpoint in authorised:
         return
 
     if not user_id:
         return redirect(url_for('login'))
-    elif '/profile' in endpoint and user_id not in endpoint:
+    elif '/profile' in endpoint and username not in endpoint:
         return render_template('error.html', message='unauthorised', prev=url_for('index'))
 
     return
@@ -68,6 +69,8 @@ def register():
 
 @app.route('/profile/<string:username>')
 def profile(username):
+    if username != users.get_username():
+        return render_template('error.html', message='unauthorised', prev=url_for('index'))
     return render_template('profile.html')
 
 @app.route('/new_list')
