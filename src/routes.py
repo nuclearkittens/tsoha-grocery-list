@@ -36,13 +36,17 @@ def login():
         logged_in, err = users.login(username, password)
         if not logged_in:
             msg = ', '.join(err)
-            return render_template('error.html', message=msg, prev=url_for('login'))
+            return redirect('/error', message=msg, prev=url_for('login'))
 
     return render_template('login.html')
 
 @app.route('/error')
-def error():
-    return render_template('error.html', message='unidentified_error', prev=url_for('index'))
+def error(message=None, prev=None):
+    if not message:
+        message = 'unidentified_error'
+    if not prev:
+        prev = url_for('index')
+    return render_template('error.html', message, prev)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
@@ -58,27 +62,27 @@ def register():
         password = request.form['password']
         password_check = request.form['password_check']
         if password != password_check:
-            return render_template('error.html', message='password_does_not_match', prev=url_for('register'))
+            return redirect('/error', message='password_does_not_match', prev=url_for('register'))
 
         registered, err = users.register(username, password)
         if not registered:
             msg = ', '.join(err)
-            return render_template('error.html', message=msg, prev=url_for('register'))
+            return redirect('/error', message=msg, prev=url_for('register'))
 
     return render_template('register.html')
 
-@app.route('/<string:username>')
+@app.route('/profile/<string:username>')
 def profile(username):
     if username != users.get_username():
-        return render_template('error.html', message='unauthorised', prev=url_for('index'))
+        return redirect('/error', message='unauthorised')
     return render_template('profile.html')
 
-@app.route('/new_list', methods=['GET', 'POST'])
+@app.route('/new_list')
 def new_list():
     categories = groceries.get_categories()
     return render_template('new_list.html', categories=categories)
 
-@app.route('/submit_list', methods=['POST']):
+@app.route('/submit_list', methods=['POST'])
 def submit_list():
     list_name = request.form['list_name']
     items = []
@@ -95,3 +99,7 @@ def submit_list():
             'category': cat
         }
         items.append(item)
+
+@app.route('/lists/<int:list_id>')
+def lists(list_id):
+    pass
