@@ -27,7 +27,7 @@ CREATE TABLE items (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     uom TEXT NOT NULL, -- unit of measurement
-    cat_id INTEGER REFERENCES categories
+    cat_id INTEGER REFERENCES categories ON DELETE RESTRICT
 );
 
 CREATE TABLE grocery_list (
