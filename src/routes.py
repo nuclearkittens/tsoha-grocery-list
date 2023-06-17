@@ -1,6 +1,7 @@
 from flask import redirect, render_template, request, url_for
 
 from app import app
+import groceries
 import users
 
 @app.before_request
@@ -15,7 +16,7 @@ def before_request():
 
     if not user_id:
         return redirect(url_for('login'))
-    elif '/profile' in endpoint and username not in endpoint:
+    elif username not in endpoint:
         return render_template('error.html', message='unauthorised', prev=url_for('index'))
 
     return
@@ -66,7 +67,7 @@ def register():
 
     return render_template('register.html')
 
-@app.route('/profile/<string:username>')
+@app.route('/<string:username>')
 def profile(username):
     if username != users.get_username():
         return render_template('error.html', message='unauthorised', prev=url_for('index'))
@@ -74,26 +75,23 @@ def profile(username):
 
 @app.route('/new_list', methods=['GET', 'POST'])
 def new_list():
-    if request.method == 'POST':
-        list_name = request.form['list_name']
-        items = []
-        names = request.form.getlist('item_name[]')
-        qtys = request.form.getlist('quantity[]')
-        uoms = request.form.getlist('uom[]')
-        cats = request.form.getlist('category[]')
+    categories = groceries.get_categories()
+    return render_template('new_list.html', categories=categories)
 
-        for name, qty, uom, cat in zip(names, qtys, uoms, cats):
-            item = {
-                'name': name,
-                'quantity': qty,
-                'uom': uom,
-                'category': cat
-            }
-            items.append(item)
+@app.route('/submit_list', methods=['POST']):
+def submit_list():
+    list_name = request.form['list_name']
+    items = []
+    names = request.form.getlist('item_name[]')
+    qtys = request.form.getlist('quantity[]')
+    uoms = request.form.getlist('uom[]')
+    cats = request.form.getlist('category[]')
 
-        # save to db here
-
-        # TODO: show generated list – REDIRECT IS TEMPORARY!
-        return redirect('/')
-
-    return render_template('new_list.html')
+    for name, qty, uom, cat in zip(names, qtys, uoms, cats):
+        item = {
+            'name': name,
+            'quantity': qty,
+            'uom': uom,
+            'category': cat
+        }
+        items.append(item)

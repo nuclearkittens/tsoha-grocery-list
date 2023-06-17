@@ -20,9 +20,9 @@ def login(username, password, err=list()):
     '''
 
     logged_in = False
-    sql = text('SELECT id, password FROM users WHERE username=:username')
+    query = text('SELECT id, password FROM users WHERE username=:username')
     try:
-        user = db.session.execute(sql, {'username': username}).fetchone()
+        user = db.session.execute(query, {'username': username}).fetchone()
     except:
         user = None
 
@@ -78,8 +78,8 @@ def register(username, password):
     if not err:
         hashed_pw = generate_password_hash(password)
         try:
-            sql = text('INSERT INTO users (username, password) VALUES (:username, :password)')
-            db.session.execute(sql, {'username': username, 'password': hashed_pw})
+            query = text('INSERT INTO users (username, password) VALUES (:username, :password)')
+            db.session.execute(query, {'username': username, 'password': hashed_pw})
             db.session.commit()
             registered, err = login(username, password, err=err)
         except IntegrityError:

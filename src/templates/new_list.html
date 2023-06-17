@@ -3,9 +3,61 @@
 
 {% block title %}create a new grocery list{% endblock %}
 
+{% block script %}
+<script async>
+    var formContainer = document.getElementById('item-container');
+    var counter = 1;
+
+    function addFormField() {
+        counter++;
+        var newItem = `
+            <div class="item">
+                <label for="item1">item:</label>
+                <input type="text" name="item_name[]" id="item1" required>
+                <label for="quantity1">quantity:</label>
+                <input type="number" name="quantity[]" id="quantity1" required>
+                <label for="uom1">unit:</label>
+                <input type="text" name="uom[]" id="uom1" required>
+                <label for="category1">category</label>
+                <select name="category[]" id="category1" required>
+                    {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        `;
+        formContainer.innerHTML += newItem;
+    }
+</script>
+{% endblock %}
+
 {% block content %}
 <div>
     <h1>new grocery list</h1>
     <p>[here be the grocery list form]</p>
+    <form action="/submit_list" method="post">
+        <div>
+            <label for="list_name">list name (optional)</label>
+            <input type="text" name="list_name" id="list_name">
+        </div>
+        <div id="item-container">
+            <div class="item">
+                <label for="item1">item:</label>
+                <input type="text" name="item_name[]" id="item1" required>
+                <label for="quantity1">quantity:</label>
+                <input type="number" name="quantity[]" id="quantity1" required>
+                <label for="uom1">unit:</label>
+                <input type="text" name="uom[]" id="uom1" required>
+                <label for="category1">category</label>
+                <select name="category[]" id="category1" required>
+                    {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button type="button" onclick="addFormField()">add item</button>
+        <button type="submit">save list</button>
+    </form>
 </div>
 {% endblock %}
