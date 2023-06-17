@@ -20,7 +20,6 @@ def before_request():
 
     return
 
-
 @app.route('/')
 def index():
     '''Render the main page.'''
@@ -73,6 +72,28 @@ def profile(username):
         return render_template('error.html', message='unauthorised', prev=url_for('index'))
     return render_template('profile.html')
 
-@app.route('/new_list')
+@app.route('/new_list', methods=['GET', 'POST'])
 def new_list():
+    if request.method == 'POST':
+        list_name = request.form['list_name']
+        items = []
+        names = request.form.getlist('item_name[]')
+        qtys = request.form.getlist('quantity[]')
+        uoms = request.form.getlist('uom[]')
+        cats = request.form.getlist('category[]')
+
+        for name, qty, uom, cat in zip(names, qtys, uoms, cats):
+            item = {
+                'name': name,
+                'quantity': qty,
+                'uom': uom,
+                'category': cat
+            }
+            items.append(item)
+
+        # save to db here
+
+        # TODO: show generated list – REDIRECT IS TEMPORARY!
+        return redirect('/')
+
     return render_template('new_list.html')

@@ -9,6 +9,20 @@ CREATE TABLE categories (
     name TEXT UNIQUE NOT NULL
 );
 
+INSERT INTO categories (name) VALUES
+    ('fruit & veg'),
+    ('dairy & alternatives'),
+    ('meat & alternatives'),
+    ('grains'),
+    ('condiments & spices'),
+    ('canned goods'),
+    ('baking'),
+    ('snacks'),
+    ('beverages'),
+    ('frozen'),
+    ('household & toiletries'),
+    ('other');
+
 CREATE TABLE items (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -19,7 +33,8 @@ CREATE TABLE items (
 CREATE TABLE grocery_list (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users ON DELETE RESTRICT,
-    created_at DATE
+    created_at DATE,
+    name TEXT
 );
 
 CREATE TABLE grocery_list_items (
