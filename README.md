@@ -16,15 +16,20 @@ Super simple, right? Not to worry, if time is kind some of the following could b
 + The user can delete their account
 + Unit of measurement conversion
 
-Known issues (*updated 04/06/23*):
-+ Does not catch all errors correctly when trying to register
-+ It ugly ':D'
+Known issues (*update 18/06/23*):
++ It ugly ':D' I will focus on the layout/CSS/making the application look nice after all the main functionalities are done
 
 For my own convenience, I have created a [spreadsheet](https://docs.google.com/spreadsheets/d/17Hk51ZoDV1AqUWWAYf6MvK6ZVflhoNZ81wzrthbtHzs/) to track the project progress. It includes a roadmap/backlog of sorts, checklists for deadlines, and I will probably use it for general planning/time keeping as well.
 
 ## Project progress
 
-*updated 04/06/23*
+*update 18/06/23*
++ schema updated
++ creating new lists
++ error routing
++ spreadsheet
+
+*update 04/06/23*
 
 The project is still very much a work in progress – only the log in/log out/register functionalities are (more or less) fully working. Lazy, me? You got it. Slowly getting into this.
 

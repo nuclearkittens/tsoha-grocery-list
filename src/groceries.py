@@ -15,7 +15,7 @@ def _get_unique_items(items):
         else:
             unique_items[key] = item
 
-    return list(unique_items.values)
+    return list(unique_items.values())
 
 def get_category_dict():
     '''Return a dictionary of the category names and identifiers.'''
@@ -126,7 +126,7 @@ def new_list(user_id, list_name=None):
         query,
         {'user_id': user_id, 'created_at': created_at, 'name': list_name}
     )
-    db.commit()
+    db.session.commit()
 
     query = text(
         '''
@@ -150,7 +150,7 @@ def _update_item(list_id, item_id, qty):
         '''
     )
 
-    db.session.execute(query, {'list_id': list_id, 'item_id': item_id, 'amount': amount})
+    db.session.execute(query, {'list_id': list_id, 'item_id': item_id, 'qty': qty})
     db.session.commit()
 
 def update_list(list_id, items):

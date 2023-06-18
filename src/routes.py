@@ -4,19 +4,6 @@ from app import app
 import groceries
 import users
 
-# @app.before_request
-# def before_request():
-#     authorised = ['index', 'login', 'login/check', 'register', 'register/check']
-#     endpoint = request.endpoint
-#     user_id = users.get_user_id()
-
-#     if endpoint in authorised:
-#         return
-#     elif not user_id:
-#         return redirect(url_for('login'))
-
-#     return
-
 @app.errorhandler(404)
 def page_not_found(e):
     message = '404_page_not_found'
@@ -105,7 +92,10 @@ def profile(username):
 
 @app.route('/new_list')
 def new_list():
-    categories = groceries.get_category_dict().keys
+    if not users.get_user_id():
+        return redirect(url_for('login'))
+
+    categories = groceries.get_category_dict().keys()
     return render_template('new_list.html', categories=categories)
 
 @app.route('/submit_list', methods=['POST'])
@@ -129,6 +119,7 @@ def submit_list():
         items.append(item)
 
     list_id = groceries.new_list(user_id, list_name)
+    groceries.update_list(list_id, items)
 
 @app.route('/lists/<int:list_id>')
 def lists(list_id):

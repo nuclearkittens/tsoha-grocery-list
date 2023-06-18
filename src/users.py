@@ -87,10 +87,6 @@ def register(username, password):
 
     return (registered, err)
 
-def check_authorisation(user_id):
-    '''Check if user has authorisation to a user page.'''
-    pass
-
 def get_user_id():
     '''Return the user id used in the current session.'''
     return session.get('user_id', 0)
