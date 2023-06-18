@@ -24,20 +24,6 @@ For my own convenience, I have created a [spreadsheet](https://docs.google.com/s
 
 ## Project progress
 
-### *update 18/06/23*
-+ schema updated
-+ creating new lists
-+ error routing
-+ spreadsheet
-+ lists have max items 
-+ shows list after creation
-+ can create new shopping list
-+ lists can be accessed from user's page
-+ PRG
-+ lists can have multiple items of the same name with different categories or units of measurement
-
-***
-
 ### *update 04/06/23*
 
 The project is still very much a work in progress – only the log in/log out/register functionalities are (more or less) fully working. Lazy, me? You got it. Slowly getting into this.
@@ -48,7 +34,24 @@ The backlog spreadsheet has been updated, too, and I will keep using it, possibl
 
 ***
 
-**There are absolutely no automated tests, so no guarantees of anything working. Code is fairly clean and documented, and linting is done using pylint (8.76/10 last time I checked).**
+### *update 18/06/23*
+
+Guess who got Just Dance 2022 a week ago and has been playing that instead of studying? Yes, that's me. Thanks to my awesome procrastination skills, I am somewhat behind with this project. However, below are new implemented functions and other updates:
+
++ The database schema has been updated to support current functionalities better
++ The user can create new grocery lists, as well as delete existing ones
++ The user page lists all of the users grocery lists
++ Error handling has been improved
++ The routes follow the PRG model better than previously, as per Labtool feedback
++ The grocery lists have a maximum item limit (currently 64 because why not)
++ The grocery lists can contain multiple items of the same name if the categories or units are different (duplicates should not be possible)
++ The spreadsheet has been updated
+
+There is still a long way to go before the project is finished. I aim to add list editing next (some backend stuff for that is already in progress), plus the last week before final deadline will be dedicated for making the application presentable and testing.
+
+***
+
+**There are absolutely no automated tests, so no guarantees of anything working. Code is fairly clean and documented, and linting is done using pylint (currently 9.37/10).**
 
 ## Installation & instructions
 
