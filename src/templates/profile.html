@@ -6,6 +6,29 @@
 {% block content %}
 <div>
     <h1>{{ session.username }}'s profile</h1>
-    <p>[here be the grocery lists]</p>
+    <h2>{{ session.username }}'s saved grocery lists</h2>
+
+    {% if not grocery_lists %}
+    <p>you don't have any saved grocery lists ):</p>
+    {% endif %}
+
+    <div>
+        <a href="{{ url_for('new_list') }}">create a new list</a>
+    </div>
+
+    {% if grocery_lists %}
+    <div>
+        <ul>
+            {% for entry in grocery_lists %}
+            <li>
+                <a href="{{ url_for('lists', list_id=entry[0])}}">
+                    {{ entry[1] }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
 </div>
 {% endblock %}

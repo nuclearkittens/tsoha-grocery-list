@@ -73,6 +73,20 @@ def get_list_items(list_id):
 
     return items
 
+def get_lists_by_user(user_id):
+    '''Return the name and identifier of all
+    grocery lists owned by an user.
+    '''
+    query = text(
+        '''
+        SELECT id, name FROM grocery_list
+        WHERE user_id=:user_id
+        ORDER BY created_at DESC
+        '''
+    )
+    res = db.session.execute(query, {'user_id': user_id}).fetchall()
+    return res if res else None
+
 def get_sorted_list(list_id):
     '''Fetch an existing list from database, sorted based on category.
 

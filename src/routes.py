@@ -89,7 +89,11 @@ def profile(username):
     '''Render the profile page of the user.'''
     if username != users.get_username():
         return redirect(url_for('error', message='unauthorised'))
-    return render_template('profile.html')
+
+    user_id = users.get_user_id()
+    grocery_lists = groceries.get_lists_by_user(user_id)
+
+    return render_template('profile.html', grocery_lists=grocery_lists)
 
 @app.route('/new_list')
 def new_list():
