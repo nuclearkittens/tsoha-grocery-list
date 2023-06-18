@@ -24,7 +24,7 @@ For my own convenience, I have created a [spreadsheet](https://docs.google.com/s
 
 ## Project progress
 
-*update 18/06/23*
+### *update 18/06/23*
 + schema updated
 + creating new lists
 + error routing
@@ -32,8 +32,13 @@ For my own convenience, I have created a [spreadsheet](https://docs.google.com/s
 + lists have max items 
 + shows list after creation
 + can create new shopping list
++ lists can be accessed from user's page
++ PRG
++ lists can have multiple items of the same name with different categories or units of measurement
 
-*update 04/06/23*
+***
+
+### *update 04/06/23*
 
 The project is still very much a work in progress – only the log in/log out/register functionalities are (more or less) fully working. Lazy, me? You got it. Slowly getting into this.
 
@@ -41,7 +46,9 @@ On the database side of things, well, nothing is really implemented in the actua
 
 The backlog spreadsheet has been updated, too, and I will keep using it, possibly add some more user stories if my time management allows it. The list of main functionalities (above) has been updated as well per the feedback I got on Labtool.
 
-There are absolutely no automated tests, so no guarantees of anything working. Code is fairly clean and documented, and linting is done using pylint (8.76/10 last time I checked).
+***
+
+**There are absolutely no automated tests, so no guarantees of anything working. Code is fairly clean and documented, and linting is done using pylint (8.76/10 last time I checked).**
 
 ## Installation & instructions
 
@@ -57,4 +64,6 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r ./requirements.txt
 ```
-Assuming you've got PostgreSQL installed, you can define the database schema by `psql < schema.sql`. Within the virtual environment (you might need to navigate to the `src` directory for this to work, idk), run the application using the command `flask run`.
+Assuming you've got PostgreSQL installed, you can define the database schema by `psql < schema.sql`. **The schema includes queries to drop existing tables**, so if you already have tables with the same names as defined in the schema, take this into account.
+
+Within the virtual environment (you might need to navigate to the `src` directory for this to work, idk), run the application using the command `flask run`.
