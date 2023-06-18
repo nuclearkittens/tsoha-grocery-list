@@ -22,7 +22,7 @@ def login(username, password, err=list()):
     logged_in = False
     query = text('SELECT id, password FROM users WHERE username=:username')
     try:
-        user = db.session.execute(query, {'username': username}).fetchone()[0]
+        user = db.session.execute(query, {'username': username}).fetchone()
     except:
         user = None
 
@@ -86,6 +86,10 @@ def register(username, password):
             err.append('username_already_exists')
 
     return (registered, err)
+
+def check_authorisation(user_id):
+    '''Check if user has authorisation to a user page.'''
+    pass
 
 def get_user_id():
     '''Return the user id used in the current session.'''

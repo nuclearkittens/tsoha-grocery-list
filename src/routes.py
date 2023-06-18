@@ -4,22 +4,18 @@ from app import app
 import groceries
 import users
 
-@app.before_request
-def before_request():
-    authorised = ['index', 'login', 'register']
-    endpoint = request.endpoint
-    user_id = users.get_user_id()
-    username = users.get_username()
+# @app.before_request
+# def before_request():
+#     authorised = ['index', 'login', 'register']
+#     endpoint = request.endpoint
+#     user_id = users.get_user_id()
 
-    if endpoint in authorised:
-        return
+#     if endpoint in authorised:
+#         return
+#     elif not user_id:
+#         return redirect(url_for('login'))
 
-    if not user_id:
-        return redirect(url_for('login'))
-    elif username not in endpoint:
-        return render_template('error.html', message='unauthorised', prev=url_for('index'))
-
-    return
+#     return
 
 @app.route('/')
 def index():
@@ -28,53 +24,79 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    '''Render the login page or related error pages.'''
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        logged_in, err = users.login(username, password)
-        if not logged_in:
-            msg = ', '.join(err)
-            return redirect('/error', message=msg, prev=url_for('login'))
-
+    '''Render the login page'''
     return render_template('login.html')
 
+@app.route('/login_check', methods=['POST'])
+def login_check():
+    '''Check if user is logged in.'''
+    username = request.form['username']
+    password = request.form['password']
+
+    logged_in, err = users.login(username, password)
+    if not logged_in:
+        msg = ', '.join(err)
+        return redirect(url_for('error', message=msg, prev='login'))
+
+    return redirect(url_for('login'))
+
 @app.route('/error')
-def error(message=None, prev=None):
+def error():
+    '''Render the error page with either a specified or
+    general error message.'''
+    message = request.args.get('message')
+    prev = request.args.get('prev')
+
     if not message:
         message = 'unidentified_error'
+
     if not prev:
         prev = url_for('index')
-    return render_template('error.html', message, prev)
+    else:
+        prev = url_for(prev)
+
+    return render_template('error.html', message=message, prev=prev)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    if request.method == 'POST':
-        users.logout()
+    '''Render the logout page.'''
     return render_template('logout.html')
+
+@app.route('/logout_check', methods=['POST'])
+def logout_check():
+    '''Log user out.'''
+    users.logout()
+    return redirect(url_for('logout'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     '''Render the registration page or related errors.'''
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        password_check = request.form['password_check']
-        if password != password_check:
-            return redirect('/error', message='password_does_not_match', prev=url_for('register'))
-
-        registered, err = users.register(username, password)
-        if not registered:
-            msg = ', '.join(err)
-            return redirect('/error', message=msg, prev=url_for('register'))
-
     return render_template('register.html')
 
-@app.route('/profile/<string:username>')
+@app.route('/register_check', methods=['POST'])
+def register_check():
+    '''Check the registration.'''
+    username = request.form['username']
+    password = request.form['password']
+    password_check = request.form['password_check']
+    print(username, password, password_check)
+    if password != password_check:
+        return redirect(url_for(
+            'error', message='password_does_not_match', prev='register'
+        ))
+
+    registered, err = users.register(username, password)
+    print(registered, err)
+    if not registered:
+        msg = ', '.join(err)
+        return redirect(url_for('error', message=msg, prev='register'))
+
+    return redirect(url_for('register'))
+
+@app.route('/profile/<string:username>', methods=['GET', 'POST'])
 def profile(username):
     if username != users.get_username():
-        return redirect('/error', message='unauthorised')
+        return redirect(url_for('error', message='unauthorised'))
     return render_template('profile.html')
 
 @app.route('/new_list')
