@@ -1,21 +1,9 @@
 '''Module for performing grocery list actions.'''
 
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.sql import text
 
 from db import db
-
-def _get_unique_items(items):
-    '''Remove duplicate entries from a grocery list.'''
-    unique_items = {}
-    for item in items:
-        key = (item['name'], item['uom'], item['category'])
-        if key in unique_items:
-            unique_items[key]['quantity'] += item['quantity']
-        else:
-            unique_items[key] = item
-
-    return list(unique_items.values())
 
 def get_category_dict():
     '''Return a dictionary of the category names and identifiers.'''
@@ -31,8 +19,7 @@ def get_item_id(item):
         '''
         SELECT i.id FROM items i
         JOIN categories c ON c.id=i.cat_id
-        WHERE i.name=:name
-            AND i.uom=:uom AND c.id=:category
+        WHERE i.name=:name AND i.uom=:uom AND c.id=:category
         '''
     )
     query_add = text('INSERT INTO items (name, uom, cat_id) VALUES (:name, :uom, :cat_id)')
@@ -53,11 +40,11 @@ def get_item_id(item):
 
     return item_id
 
-def get_list_name(list_id):
+def get_list_info(list_id):
     '''Return the name of the list.'''
-    query = text('SELECT name FROM grocery_list WHERE id=:list_id')
-    list_name = db.session.execute(query, {'list_id': list_id}).fetchone()
-    return list_name[0] if list_name else None
+    query = text('SELECT name, created_at FROM grocery_list WHERE id=:list_id')
+    list_info = db.session.execute(query, {'list_id': list_id}).fetchone()
+    return list_info if list_info else (None, None)
 
 def get_list_items(list_id):
     '''Return a list of items and their information from
@@ -98,12 +85,13 @@ def get_sorted_list(list_id):
     '''
     query = text(
         '''
-        SELECT c.name AS cat, i.name AS item, g.quantity AS qty
+        SELECT c.name AS cat, i.name AS item,
+        i.uom AS uom, g.quantity AS qty 
         FROM grocery_list_items g
         JOIN items i ON i.id=g.item_id
         JOIN categories c ON c.id=i.cat_id
         WHERE g.list_id=:list_id
-        ORDER BY c.name, i.name
+        ORDER BY c.id, i.name
         '''
     )
     res = db.session.execute(query, {'list_id': list_id}).fetchall()
@@ -111,8 +99,8 @@ def get_sorted_list(list_id):
     groceries = {}
     for cat, item, uom, qty in res:
         if cat not in groceries:
-            groceries[cat] = {}
-        groceries[cat][item] = (qty, uom)
+            groceries[cat] = []
+        groceries[cat].append((item, qty, uom))
 
     return groceries
 
@@ -120,7 +108,9 @@ def new_list(user_id, list_name=None):
     '''Create a new entry in the database and
     return the identifier of the new list.
     '''
-    created_at = datetime.today().strftime('%Y-%m-%d')
+    created_at = datetime.now(timezone.utc).strftime(
+        '%Y-%m-%d %H:%M:%S%z'
+    )[:-2]
     if not list_name:
         list_name = f'grocery list {created_at}'
 
@@ -141,7 +131,6 @@ def new_list(user_id, list_name=None):
         SELECT id FROM grocery_list
         WHERE user_id=:user_id
         ORDER BY created_at DESC
-        LIMIT 1
         '''
     )
     list_id = db.session.execute(query, {'user_id': user_id}).fetchone()
@@ -164,8 +153,6 @@ def _update_item(list_id, item_id, qty):
 
 def update_list(list_id, items):
     '''Update an existing grocery list.'''
-    items = _get_unique_items(items)
-
     for item in items:
         item_id = get_item_id(item)
         _update_item(list_id, item_id, item['quantity'])

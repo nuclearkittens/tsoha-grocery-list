@@ -5,7 +5,18 @@
 
 {% block content %}
 <div>
-    <h1>{{ list_name }}'</h1>
-    <p>[here be the grocery list]</p>
+    <h1>{{ list_name }}</h1>
+    <p>{{ session.username }}'s grocery list</p>
+    <p>created at {{ timestamp }}</p>
+    <div>
+        {% for category, items in list_items.items() %}
+            <h2>{{ category }}</h2>
+            <ul>
+                {% for item in items %}
+                    <li>{{ item[1] }} {{ item[2] }} {{ item[0] }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

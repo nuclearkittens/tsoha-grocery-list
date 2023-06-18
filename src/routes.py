@@ -133,7 +133,11 @@ def lists():
     list_id = request.args.get('list_id')
 
     if groceries.check_authorisation(user_id, list_id):
-        list_name = groceries.get_list_name(list_id)
-        return render_template('lists.html', list_name=list_name)
-    
+        list_info = groceries.get_list_info(list_id)
+        list_items = groceries.get_sorted_list(list_id)
+        return render_template(
+            'lists.html', list_name=list_info[0],
+            timestamp=list_info[1], list_items=list_items
+        )
+
     return redirect(url_for('error', message='unauthorised'))

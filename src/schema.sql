@@ -1,4 +1,4 @@
--- DROP TABLE IF EXISTS users, categories, items, grocery_list, grocery_list_items;
+DROP TABLE IF EXISTS users, categories, items, grocery_list, grocery_list_items;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -35,7 +35,7 @@ CREATE TABLE items (
 CREATE TABLE grocery_list (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users ON DELETE RESTRICT,
-    created_at DATE,
+    created_at TIMESTAMP WITH TIME ZONE,
     name TEXT
 );
 
