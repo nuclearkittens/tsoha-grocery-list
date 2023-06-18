@@ -6,7 +6,7 @@ Main functionalities:
 + The user can register/log in
 + The user can create/save shopping lists
 + The user can view their previous shopping lists
-+ The shopping list items are put into categories (fruit & veg, chilled food, frozen food, household items, etc.) for easier shopping
++ The shopping list items are put categorised (fruit & veg, chilled food, frozen food, household items, etc.) for easier shopping
 + The user can edit an existing shopping list
 + The user can delete old shopping lists
 

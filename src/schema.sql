@@ -3,7 +3,8 @@ DROP TABLE IF EXISTS users, categories, items, grocery_list, grocery_list_items;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    activated BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE categories (

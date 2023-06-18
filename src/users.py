@@ -20,7 +20,12 @@ def login(username, password, err=list()):
     '''
 
     logged_in = False
-    query = text('SELECT id, password FROM users WHERE username=:username')
+    query = text(
+        '''
+        SELECT id, password FROM users
+        WHERE username=:username AND activated=TRUE
+        '''
+    )
     try:
         user = db.session.execute(query, {'username': username}).fetchone()
     except:
