@@ -131,8 +131,36 @@ def submit_list():
 
     return redirect(url_for('lists', list_id=list_id))
 
+@app.route('/delete_list')
+def delete_list():
+    '''Display the list deletion page.'''
+    user_id = users.get_user_id()
+    list_id = request.args.get('list_id')
+
+    if groceries.check_authorisation(user_id, list_id):
+        list_info = groceries.get_list_info(list_id)
+        return render_template('delete_list.html', list_id=list_id, list_name=list_info[0])
+
+    return redirect(url_for('error', message='unauthorised'))
+
+@app.route('/delete_list_check', methods=['POST'])
+def delete_list_check():
+    '''Delete the specified list.'''
+    list_id = request.form.get('list_id')
+    confirm = request.form.get('confirm')
+
+    if confirm == 'on':
+        groceries.delete_list(list_id)
+        return render_template('delete_list_confirmation.html', deleted=True)
+    elif confirm == 'off':
+        return render_template('delete_list_confirmation.html', deleted=False)
+    else:
+        return redirect(url_for('error', message='list_deletion_failed'))
+
 @app.route('/lists')
 def lists():
+    '''Display the specified grocery list if the user
+    has access rights.'''
     user_id = users.get_user_id()
     list_id = request.args.get('list_id')
 
@@ -140,7 +168,7 @@ def lists():
         list_info = groceries.get_list_info(list_id)
         list_items = groceries.get_sorted_list(list_id)
         return render_template(
-            'lists.html', list_name=list_info[0],
+            'lists.html', list_id=list_id, list_name=list_info[0],
             timestamp=list_info[1], list_items=list_items
         )
 

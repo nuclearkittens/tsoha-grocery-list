@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}delete: {{ list_name }}{% endblock %}
+
+{% block content %}
+<div>
+    <h1>delete {{ list_name }}</h1>
+    <p>are you sure you want to delete this grocery list?</p>
+    <form action="{{ url_for('delete_list_check')}}" method="post">
+        <label for="confirm-checkbox">
+            <input type="checkbox" name="confirm" id="confirm-checkbox">
+            yes, delete this list
+        </label>
+        <br>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="list_id" value="{{ list_id }}">
+        <button type="submit">delete</button>
+    </form>
+</div>
+{% endblock %}

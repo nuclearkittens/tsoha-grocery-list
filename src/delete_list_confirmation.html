@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}list deletion{% endblock %}
+
+{% block content %}
+<div>
+    {% if confirm %}
+    <h1>list deleted</h1>
+    <p>the grocery list has been successfully deleted!</p>
+    {% else %}
+    <h1>list not deleted</h1>
+    <p>the grocery list was not deleted.</p>
+    {% endif %}
+
+    <a href="{{ url_for('profile', username=session.username) }}">
+        back to my grocery lists
+    </a>
+</div>
+{% endblock %}

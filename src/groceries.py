@@ -171,6 +171,12 @@ def update_list(list_id, items):
         item_id = get_item_id(item)
         _update_item(list_id, item_id, item['quantity'])
 
+def delete_list(list_id):
+    '''Delete an existing list from database.'''
+    query = text('DELETE FROM grocery_list WHERE id=:list_id')
+    db.session.execute(query, {'list_id': list_id})
+    db.session.commit()
+
 def check_authorisation(user_id, list_id):
     '''Check if an user has access to a list.'''
     query = text(
