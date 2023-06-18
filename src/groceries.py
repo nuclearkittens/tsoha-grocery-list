@@ -29,10 +29,10 @@ def get_item_id(item):
     '''
     query_get = text(
         '''
-        SELECT id FROM items i
+        SELECT i.id FROM items i
         JOIN categories c ON c.id=i.cat_id
-        WHERE is.name=:name
-            AND i.uom=:uom AND c.name=:category
+        WHERE i.name=:name
+            AND i.uom=:uom AND c.id=:category
         '''
     )
     query_add = text('INSERT INTO items (name, uom, cat_id) VALUES (:name, :uom, :cat_id)')
@@ -53,7 +53,15 @@ def get_item_id(item):
 
     return item_id
 
+def get_list_name(list_id):
+    '''Return the name of the list.'''
+    query = text('SELECT name FROM grocery_list WHERE id=:list_id')
+    list_name = db.session.execute(query, {'list_id': list_id}).fetchone()
+    return list_name[0] if list_name else None
+
 def get_list_items(list_id):
+    '''Return a list of items and their information from
+    a specified list.'''
     query = text(
         '''
         SELECT i.name, l.quantity, i.uom, c.name AS category
@@ -141,12 +149,13 @@ def new_list(user_id, list_name=None):
     return list_id[0] if list_id else None
 
 def _update_item(list_id, item_id, qty):
+    '''Update the quantity of an item in an existing list.'''
     query = text(
         '''
         INSERT INTO grocery_list_items (list_id, item_id, quantity)
         VALUES (:list_id, :item_id, :qty)
-        ON CONFLICT (list_id, item_id)
-        DO UPDATE SET quantity = qty
+        ON CONFLICT (item_id, list_id)
+        DO UPDATE SET quantity=:qty
         '''
     )
 
@@ -154,8 +163,23 @@ def _update_item(list_id, item_id, qty):
     db.session.commit()
 
 def update_list(list_id, items):
+    '''Update an existing grocery list.'''
     items = _get_unique_items(items)
 
     for item in items:
         item_id = get_item_id(item)
         _update_item(list_id, item_id, item['quantity'])
+
+def check_authorisation(user_id, list_id):
+    '''Check if an user has access to a list.'''
+    query = text(
+        '''
+        SELECT user_id FROM grocery_list
+        WHERE id=:list_id AND user_id=:user_id
+        '''
+    )
+    auth = db.session.execute(
+        query, {'list_id': list_id, 'user_id': user_id}
+    ).fetchone()
+
+    return True if auth else False

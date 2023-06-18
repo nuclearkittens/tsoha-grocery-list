@@ -86,12 +86,14 @@ def register_check():
 
 @app.route('/profile/<string:username>', methods=['GET', 'POST'])
 def profile(username):
+    '''Render the profile page of the user.'''
     if username != users.get_username():
         return redirect(url_for('error', message='unauthorised'))
     return render_template('profile.html')
 
 @app.route('/new_list')
 def new_list():
+    '''Render the form for creating a new shopping list.'''
     if not users.get_user_id():
         return redirect(url_for('login'))
 
@@ -100,6 +102,8 @@ def new_list():
 
 @app.route('/submit_list', methods=['POST'])
 def submit_list():
+    '''Save the newly created list to the database and
+    redirect user to the list's page.'''
     user_id = users.get_user_id()
     categories = groceries.get_category_dict()
     list_name = request.form['list_name']
@@ -121,6 +125,15 @@ def submit_list():
     list_id = groceries.new_list(user_id, list_name)
     groceries.update_list(list_id, items)
 
-@app.route('/lists/<int:list_id>')
-def lists(list_id):
-    pass
+    return redirect(url_for('lists', list_id=list_id))
+
+@app.route('/lists')
+def lists():
+    user_id = users.get_user_id()
+    list_id = request.args.get('list_id')
+
+    if groceries.check_authorisation(user_id, list_id):
+        list_name = groceries.get_list_name(list_id)
+        return render_template('lists.html', list_name=list_name)
+    
+    return redirect(url_for('error', message='unauthorised'))

@@ -28,6 +28,7 @@ For my own convenience, I have created a [spreadsheet](https://docs.google.com/s
 + creating new lists
 + error routing
 + spreadsheet
++ lists have max items 
 
 *update 04/06/23*
 

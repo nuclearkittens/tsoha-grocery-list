@@ -1,3 +1,5 @@
+-- DROP TABLE IF EXISTS users, categories, items, grocery_list, grocery_list_items;
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
@@ -40,5 +42,6 @@ CREATE TABLE grocery_list (
 CREATE TABLE grocery_list_items (
     item_id INTEGER REFERENCES items ON DELETE RESTRICT,
     list_id INTEGER REFERENCES grocery_list ON DELETE CASCADE,
-    quantity INTEGER
+    quantity INTEGER,
+    UNIQUE (item_id, list_id)
 );
