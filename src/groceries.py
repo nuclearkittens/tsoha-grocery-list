@@ -17,12 +17,11 @@ def _get_unique_items(items):
 
     return list(unique_items.values)
 
-def get_category_id(category):
-    '''Return category identifier if category exists.'''
-    query = text('SELECT id FROM categories c WHERE c.name=:category')
-    res = db.session.execute(query).fetchone()
-
-    return res[0] if res else None
+def get_category_dict():
+    '''Return a dictionary of the category names and identifiers.'''
+    query = text('SELECT name, id FROM categories')
+    res = db.session.execute(query).fetchall()
+    return {row.name: row.id for row in res}
 
 def get_item_id(item):
     '''Get identifier for an item. If the item does not exist,
@@ -45,9 +44,10 @@ def get_item_id(item):
         db.session.execute(query_add, {
             'name': item['name'],
             'uom': item['uom'],
-            'cat_id': get_category_id(item['category'])
+            'cat_id': item['category']
         })
         db.session.commit()
+
         res = db.session.execute(query_get, item).fetchone()
         item_id = res[0] if res else None
 
@@ -108,11 +108,6 @@ def get_sorted_list(list_id):
 
     return groceries
 
-def get_categories():
-    '''Return a list of categories.'''
-    query = text('SELECT name FROM categories')
-    return db.session.execute(query).fetchall()
-
 def new_list(user_id, list_name=None):
     '''Create a new entry in the database and
     return the identifier of the new list.
@@ -145,13 +140,22 @@ def new_list(user_id, list_name=None):
 
     return list_id[0] if list_id else None
 
-def _add_item(item_id, item):
+def _update_item(list_id, item_id, qty):
+    query = text(
+        '''
+        INSERT INTO grocery_list_items (list_id, item_id, quantity)
+        VALUES (:list_id, :item_id, :qty)
+        ON CONFLICT (list_id, item_id)
+        DO UPDATE SET quantity = qty
+        '''
+    )
 
+    db.session.execute(query, {'list_id': list_id, 'item_id': item_id, 'amount': amount})
+    db.session.commit()
 
-def _update_quantity(list_id):
-    pass
-
-def save_list(list_id, items):
+def update_list(list_id, items):
     items = _get_unique_items(items)
 
     for item in items:
+        item_id = get_item_id(item)
+        _update_item(list_id, item_id, item['quantity'])

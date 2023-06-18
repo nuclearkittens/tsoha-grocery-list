@@ -79,11 +79,13 @@ def profile(username):
 
 @app.route('/new_list')
 def new_list():
-    categories = groceries.get_categories()
+    categories = groceries.get_category_dict().keys
     return render_template('new_list.html', categories=categories)
 
 @app.route('/submit_list', methods=['POST'])
 def submit_list():
+    user_id = users.get_user_id()
+    categories = groceries.get_category_dict()
     list_name = request.form['list_name']
     items = []
     names = request.form.getlist('item_name[]')
@@ -96,9 +98,11 @@ def submit_list():
             'name': name,
             'quantity': qty,
             'uom': uom,
-            'category': cat
+            'category': categories[cat]
         }
         items.append(item)
+
+    list_id = groceries.new_list(user_id, list_name)
 
 @app.route('/lists/<int:list_id>')
 def lists(list_id):
