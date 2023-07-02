@@ -2,7 +2,7 @@
 This web-based app is coursework for the University of Helsinki Database Application Project course. The aim is to create a web-based application to make a life just a bit easier by streamlining one of the most tedious parts of your weekly shop – i.e. compiling a shopping list.
 
 ## Project overview
-Main functionalities:
+### Main functionalities:
 + The user can register/log in
 + The user can create/save shopping lists
 + The user can view their previous shopping lists
@@ -17,7 +17,7 @@ If I decide to come back to this project at a later date, the following could be
 + The user can add recipes (at least manually) from which the ingredients are imported to a shopping list
 + Unit of measurement conversion
 
-Known issues (*update 02/07/23*):
+### Known issues (*updated 02/07/23*):
 + When creating a new list, pressing `return` submits the last (can only use `tab` to navigate between fields)
 + When adding a new item to a list (either in creating a new list or editing an existing one), the new row has to be filled
 + The layout is a mess
