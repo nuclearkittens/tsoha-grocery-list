@@ -51,6 +51,11 @@ There is still a long way to go before the project is finished. I aim to add lis
 
 ***
 
+### *update 02/07/2023*
+
+
+***
+
 **There are absolutely no automated tests, so no guarantees of anything working. Code is fairly clean and documented, and linting is done using pylint (currently 9.37/10).**
 
 ## Installation & instructions

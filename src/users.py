@@ -26,16 +26,17 @@ def login(username, password, err=list()):
         WHERE username=:username AND activated=TRUE
         '''
     )
-    try:
-        user = db.session.execute(query, {'username': username}).fetchone()
-    except:
-        user = None
+    # try:
+    #     user = db.session.execute(query, {'username': username}).fetchone()
+    # except:
+    #     user = None
+    res = db.session.execute(query, {'username': username}).fetchone()
+    user = res if res else None
 
     if user:
         if check_password_hash(user.password, password):
             session['user_id'] = user.id
             session['username'] = username
-
             logged_in = True
         else:
             err.append('wrong_password')

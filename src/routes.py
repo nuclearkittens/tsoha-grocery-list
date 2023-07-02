@@ -131,6 +131,26 @@ def submit_list():
 
     return redirect(url_for('lists', list_id=list_id))
 
+@app.route('/edit_list')
+def edit_list():
+    '''Edit an existing grocery list.'''
+    user_id = users.get_user_id()
+    list_id = request.args.get('list_id')
+
+    if groceries.check_authorisation(user_id, list_id):
+        list_items = groceries.get_list_items(list_id)
+        list_name, _ = groceries.get_list_info(list_id)
+        return render_template(
+            'edit_list.html', list_id=list_id, list_name=list_name,
+            list_items=list_items
+        )
+
+    return redirect(url_for('error', message='unauthorised'))
+
+@app.route('/submit_edited_list')
+def submit_edits():
+    pass
+
 @app.route('/delete_list')
 def delete_list():
     '''Display the list deletion page.'''
@@ -165,11 +185,11 @@ def lists():
     list_id = request.args.get('list_id')
 
     if groceries.check_authorisation(user_id, list_id):
-        list_info = groceries.get_list_info(list_id)
+        list_name, timestamp = groceries.get_list_info(list_id)
         list_items = groceries.get_sorted_list(list_id)
         return render_template(
-            'lists.html', list_id=list_id, list_name=list_info[0],
-            timestamp=list_info[1], list_items=list_items
+            'lists.html', list_id=list_id, list_name=list_name,
+            timestamp=timestamp, list_items=list_items
         )
 
     return redirect(url_for('error', message='unauthorised'))
