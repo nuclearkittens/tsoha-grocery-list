@@ -1,6 +1,7 @@
 '''Module for performing grocery list actions.'''
 
 from datetime import datetime, timezone
+from secrets import token_urlsafe
 from sqlalchemy.sql import text
 
 from db import db
@@ -42,9 +43,9 @@ def get_item_id(item):
 
 def get_list_info(list_id):
     '''Return the name of the list.'''
-    query = text('SELECT name, created_at FROM grocery_list WHERE id=:list_id')
+    query = text('SELECT name, created_at, share_id FROM grocery_list WHERE id=:list_id')
     list_info = db.session.execute(query, {'list_id': list_id}).fetchone()
-    return list_info if list_info else (None, None)
+    return list_info if list_info else (None, None, None)
 
 def get_list_items(list_id):
     '''Return a list of items and their information from
@@ -129,15 +130,19 @@ def new_list(user_id, list_name=None):
     if not list_name:
         list_name = f'grocery list {created_at}'
 
+    share_id = token_urlsafe(16)
+
     query = text(
         '''
-        INSERT INTO grocery_list (user_id, created_at, name)
-        VALUES (:user_id, :created_at, :name)
+        INSERT INTO grocery_list (user_id, created_at, name, share_id)
+        VALUES (:user_id, :created_at, :name, :share_id)
         '''
     )
     db.session.execute(
         query,
-        {'user_id': user_id, 'created_at': created_at, 'name': list_name}
+        {'user_id': user_id, 'created_at': created_at,
+         'name': list_name, 'share_id': share_id
+        }
     )
     db.session.commit()
 
@@ -213,3 +218,20 @@ def check_authorisation(user_id, list_id):
     ).fetchone()
 
     return True if auth else False
+
+def share_list(share_id):
+    '''Get the list identifier and username of the
+    user who created the list.
+    '''
+    query = text(
+        '''
+        SELECT u.username, g.id AS list_id
+        FROM grocery_list g
+        JOIN users u ON g.user_id=u.id
+        WHERE g.share_id=:share_id
+        '''
+    )
+    res = db.session.execute(
+        query, {'share_id': share_id}
+    ).fetchone()
+    return res.username, res.list_id

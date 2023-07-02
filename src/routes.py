@@ -210,14 +210,27 @@ def lists():
     '''Display the specified grocery list if the user
     has access rights.'''
     user_id = users.get_user_id()
+    username = users.get_username()
     list_id = request.args.get('list_id')
 
     if groceries.check_authorisation(user_id, list_id):
-        list_name, timestamp = groceries.get_list_info(list_id)
+        list_name, timestamp, share_id = groceries.get_list_info(list_id)
         list_items = groceries.get_sorted_list(list_id)
         return render_template(
-            'lists.html', list_id=list_id, list_name=list_name,
-            timestamp=timestamp, list_items=list_items
+            'lists.html', list_id=list_id, list_name=list_name, share_id=share_id,
+            timestamp=timestamp, list_items=list_items, username=username
         )
 
     return redirect(url_for('error', message='unauthorised'))
+
+@app.route('/shared')
+def shared():
+    '''Display a shared grocery list.'''
+    share_id = request.args.get('share_id')
+    username, list_id = groceries.share_list(share_id)
+    list_name, timestamp, _ = groceries.get_list_info(list_id)
+    list_items = groceries.get_sorted_list(list_id)
+    return render_template(
+            'lists.html', list_id=None, list_name=list_name,
+            timestamp=timestamp, list_items=list_items, username=username
+        )

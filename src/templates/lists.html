@@ -6,7 +6,7 @@
 {% block content %}
 <div>
     <h1>{{ list_name }}</h1>
-    <p>{{ session.username }}'s grocery list</p>
+    <p>{{ username }}'s grocery list</p>
     <p>created at {{ timestamp }}</p>
     <div>
         {% for category, items in list_items.items() %}
@@ -18,7 +18,23 @@
             </ul>
         {% endfor %}
     </div>
-    <p><a href="{{url_for('edit_list', list_id=list_id)}}">edit this list</a></p>
-    <p><a href="{{url_for('delete_list', list_id=list_id)}}">delete this list</a></p>
+    {% if session.user_id and list_id %}
+        <p><a href="{{url_for('edit_list', list_id=list_id)}}">edit this list</a></p>
+        <p><a href="{{url_for('delete_list', list_id=list_id)}}">delete this list</a></p>
+            <button id="copy-url-button" role="button" aria-label="copy url" title="copy url">
+                copy link to share this list
+            </button>
+            <input type="text" id="share-url" value="{{ url_for('shared', share_id=share_id, _external=True) }}" readonly>
+            <script defer>
+                document.getElementById('copy-url-button').addEventListener(
+                    'click', function() {
+                        var urlInput = document.getElementById('share-url');
+                        urlInput.select();
+                        document.execCommand('copy');
+                        alert('shareable url for this grocery list copied to clipboard (:')
+                    }
+                );
+            </script>
+    {% endif %}
 </div>
 {% endblock %}

@@ -37,7 +37,8 @@ CREATE TABLE grocery_list (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users ON DELETE SET NULL,
     created_at TIMESTAMP WITH TIME ZONE,
-    name TEXT
+    name TEXT,
+    share_id TEXT UNIQUE
 );
 
 CREATE TABLE grocery_list_items (
