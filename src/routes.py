@@ -111,12 +111,13 @@ def submit_list():
     user_id = users.get_user_id()
     categories = groceries.get_category_dict()
     list_name = request.form['list_name']
-    items = []
+
     names = request.form.getlist('item_name[]')
     qtys = request.form.getlist('quantity[]')
     uoms = request.form.getlist('uom[]')
     cats = request.form.getlist('category[]')
 
+    items = []
     for name, qty, uom, cat in zip(names, qtys, uoms, cats):
         item = {
             'name': name,
@@ -127,7 +128,7 @@ def submit_list():
         items.append(item)
 
     list_id = groceries.new_list(user_id, list_name)
-    groceries.update_list(list_id, items)
+    groceries.update_list_items(list_id, items)
 
     return redirect(url_for('lists', list_id=list_id))
 
@@ -136,20 +137,47 @@ def edit_list():
     '''Edit an existing grocery list.'''
     user_id = users.get_user_id()
     list_id = request.args.get('list_id')
+    categories = groceries.get_category_dict()
 
     if groceries.check_authorisation(user_id, list_id):
         list_items = groceries.get_list_items(list_id)
         list_name, _ = groceries.get_list_info(list_id)
         return render_template(
             'edit_list.html', list_id=list_id, list_name=list_name,
-            list_items=list_items
+            list_items=list_items, categories=categories,
+            item_count=len(list_items)
         )
 
     return redirect(url_for('error', message='unauthorised'))
 
-@app.route('/submit_edited_list')
+@app.route('/submit_edits', methods=['POST'])
 def submit_edits():
-    pass
+    '''Save the changes in the database and
+    redirect user to the list's page.'''
+    categories = groceries.get_category_dict()
+    list_name = request.form['list_name']
+    list_id = request.form['list_id']
+
+    names = request.form.getlist('item_name[]')
+    qtys = request.form.getlist('quantity[]')
+    uoms = request.form.getlist('uom[]')
+    cats = request.form.getlist('category[]')
+    deleted = request.form.getlist('deleted[]')
+
+    items = []
+    for name, qty, uom, cat in zip(names, qtys, uoms, cats):
+        item = {
+            'name': name,
+            'quantity': qty,
+            'uom': uom,
+            'category': categories[cat]
+        }
+        items.append(item)
+
+    groceries.update_list_items(list_id, items, deleted)
+    groceries.update_list_name(list_id, list_name)
+
+    return redirect(url_for('lists', list_id=list_id))
 
 @app.route('/delete_list')
 def delete_list():

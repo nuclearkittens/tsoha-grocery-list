@@ -8,7 +8,7 @@
 <script>
     $(document).ready(function () {
         var counter = Number("{{ item_count }}");
-        var maxItems = 64;
+        var maxItems = 5;
         function addFormField() {
             if (counter >= maxItems) {
                 $('#max-items-message').text('cannot add more than (' + maxItems + ') items.');
@@ -45,21 +45,22 @@
     <h1>edit {{ list_name }}</h1>
     <form action="{{ url_for('submit_edits') }}" method="post">
         <div>
-            <label for="list_name">list name (optional)</label>
-            <input type="text" name="list_name" id="list_name" value="{{ list_name }}">
+            <label for="list_name">list name</label>
+            <input type="text" name="list_name" id="list_name" value="{{ list_name }}" required>
             <input type="hidden" name="list_id" value="{{ list_id }}">
         </div>
-        {% for item in list_items %}
-        <div>
-            <input type="text" name="item_name[]" value="{{ item['name'] }}" readonly>
-            <input type="number" name="item_quantity[]" value="{{ item['quantity'] }}">
-            <input type="text" name="uom[]" id="{{ item['uom'] }}" value="{{ item['uom'] }}" readonly>
-            <input type="text" name="category[]" id="{{ item['category'] }}" value="{{ item['category'] }}" readonly>
-            <input type="checkbox" id="remove" value="remove">
-            <label for="remove">remove</label>
+        <div id="item-container">
+            {% for item in list_items %}
+            <div class="item">
+                <input type="text" name="item_name[]" value="{{ item['name'] }}" readonly>
+                <input type="number" name="item_quantity[]" value="{{ item['quantity'] }}">
+                <input type="text" name="uom[]" id="{{ item['uom'] }}" value="{{ item['uom'] }}" readonly>
+                <input type="text" name="category[]" id="{{ item['category'] }}" value="{{ item['category'] }}" readonly>
+                <input type="checkbox" name="deleted[]" value="{{ item['id'] }}">
+                <label for="deleted[]">delete</label>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-        <div id="item-container"></div>
         <button type="button" id="add-item-button">add item</button>
         <p id="max-items-message"></p>
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

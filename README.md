@@ -16,9 +16,10 @@ Super simple, right? Not to worry, if time is kind some of the following could b
 + The user can delete their account
 + Unit of measurement conversion
 
-Known issues (*update 18/06/23*):
+Known issues (*update 02/07/23*):
 + It ugly ':D' I will focus on the layout/CSS/making the application look nice after all the main functionalities are done
 + When creating a new list, pressing `return` submits the last (can only use `tab` to navigate between fields)
++ When adding a new item to a list (either in creating a new list or editing an existing one), the new row has to be filled.
 
 For my own convenience, I have created a [spreadsheet](https://docs.google.com/spreadsheets/d/17Hk51ZoDV1AqUWWAYf6MvK6ZVflhoNZ81wzrthbtHzs/) to track the project progress. It includes a roadmap/backlog of sorts, checklists for deadlines, and I will probably use it for general planning/time keeping as well.
 

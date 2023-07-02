@@ -51,7 +51,7 @@ def get_list_items(list_id):
     a specified list.'''
     query = text(
         '''
-        SELECT i.name, l.quantity, i.uom, c.name AS category
+        SELECT i.id, i.name, l.quantity, i.uom, c.name AS category
         FROM items AS i
         JOIN grocery_list_items AS l ON l.item_id=i.id
         JOIN grocery_list AS g ON g.id=l.list_id
@@ -64,6 +64,7 @@ def get_list_items(list_id):
     items = []
     for row in res:
         item = {
+            'id': row.id,
             'name': row.name,
             'quantity': row.quantity,
             'uom': row.uom,
@@ -144,10 +145,11 @@ def new_list(user_id, list_name=None):
         '''
         SELECT id FROM grocery_list
         WHERE user_id=:user_id
+        AND name=:name
         ORDER BY created_at DESC
         '''
     )
-    list_id = db.session.execute(query, {'user_id': user_id}).fetchone()
+    list_id = db.session.execute(query, {'user_id': user_id, 'name': list_name}).fetchone()
 
     return list_id[0] if list_id else None
 
@@ -165,11 +167,32 @@ def _update_item(list_id, item_id, qty):
     db.session.execute(query, {'list_id': list_id, 'item_id': item_id, 'qty': qty})
     db.session.commit()
 
-def update_list(list_id, items):
+def _delete_item(list_id, item_id):
+    '''Delete an item from an existing list.'''
+    query = text(
+        '''
+        DELETE FROM grocery_list_items
+        WHERE item_id=:item_id AND list_id=:list_id
+        '''
+    )
+    db.session.execute(query, {'list_id': list_id, 'item_id': item_id})
+    db.session.commit()
+
+def update_list_items(list_id, items, deleted=None):
     '''Update an existing grocery list.'''
+
     for item in items:
         item_id = get_item_id(item)
         _update_item(list_id, item_id, item['quantity'])
+
+    if deleted:
+        for item_id in deleted:
+            _delete_item(list_id, item_id)
+
+def update_list_name(list_id, list_name):
+    query = text('UPDATE grocery_list SET name=:list_name WHERE id=:list_id')
+    db.session.execute(query, {'list_name': list_name, 'list_id': list_id})
+    db.session.commit()
 
 def delete_list(list_id):
     '''Delete an existing list from database.'''
