@@ -9,17 +9,18 @@ Main functionalities:
 + The shopping list items are put categorised (fruit & veg, chilled food, frozen food, household items, etc.) for easier shopping
 + The user can edit an existing shopping list
 + The user can delete old shopping lists
-
-Super simple, right? Not to worry, if time is kind some of the following could be included:
-+ The user can share a shopping list
-+ The user can add recipes (at least manually) from which the ingredients are imported to a shopping list
++ The user can share a shopping list (kind of – this is fairly pointless when the application is run locally)
 + The user can delete their account
+
+If I decide to come back to this project at a later date, the following could be implemented:
+
++ The user can add recipes (at least manually) from which the ingredients are imported to a shopping list
 + Unit of measurement conversion
 
 Known issues (*update 02/07/23*):
-+ It ugly ':D' I will focus on the layout/CSS/making the application look nice after all the main functionalities are done
 + When creating a new list, pressing `return` submits the last (can only use `tab` to navigate between fields)
-+ When adding a new item to a list (either in creating a new list or editing an existing one), the new row has to be filled.
++ When adding a new item to a list (either in creating a new list or editing an existing one), the new row has to be filled
++ The layout is a mess
 
 For my own convenience, I have created a [spreadsheet](https://docs.google.com/spreadsheets/d/17Hk51ZoDV1AqUWWAYf6MvK6ZVflhoNZ81wzrthbtHzs/) to track the project progress. It includes a roadmap/backlog of sorts, checklists for deadlines, and I will probably use it for general planning/time keeping as well.
 
@@ -54,14 +55,21 @@ There is still a long way to go before the project is finished. I aim to add lis
 
 ### *update 02/07/2023*
 
-+ editing existing lists
-+ lists can be shared
-+ fixed deletion msg error
-+ user account deletion
+As per usual, I had grand plans for my coursework. And again, I did not quite manage to meet all my expectations. I still need to learn to keep it simple. However, all the main functionalities I set out to do are implemented, the database has slightly grown during the project, and everything seems to work. During the last two weeks the project has seen these additions:
+
++ Editing of existing lists is now possible, including deleting items, updating the quantity, and adding new items
++ There is functionality to share the URL for a list – obviously fairly pointless if the application is only run locally and not in production, but hey ho
++ Both in the code review and Labtool feedback I was notified of the application displaying a wrong message when a list was successfully deleted – this has been fixed
++ Users can delete their accounts
++ The application has actual styling and a layout
+
+Slightly disappointed I did not leave more time for the layout design, as I generally enjoy it. I am well aware the checkbox buttons do not align with text, and accessibility might be a problem as I simply did not have time to refactor all my templates to be more screenreader or text-based browser friendly.
+
+I also apologise for not including any test data – I very much planned to do this, but only remembered it 15 minutes before the final deadline.
 
 ***
 
-**There are absolutely no automated tests, so no guarantees of anything working. Code is fairly clean and documented, and linting is done using pylint (currently 9.37/10).**
+**There are absolutely no automated tests, so no guarantees of anything working. Code is fairly clean and documented, and linting is done using pylint (currently 9.51/10). The templates and stylesheet are a bit of a mess, been ages since I've written any HTML/CSS, sorry.**
 
 ## Installation & instructions
 
