@@ -84,6 +84,28 @@ def register_check():
 
     return redirect(url_for('register'))
 
+@app.route('/delete_account')
+def delete_account():
+    '''Display the account deletion form.'''
+    user_id = users.get_user_id()
+
+    if not user_id:
+        redirect(url_for('error', message='unauthorised'))
+
+    return render_template('delete_account.html')
+
+@app.route('/delete_account_check', methods=['POST'])
+def delete_account_check():
+    user_id = users.get_user_id()
+    password = request.form.get('password')
+    confirm = request.form.get('confirm')
+
+    deleted = False
+    if confirm == 'on':
+        deleted = users.delete_account(user_id, password)
+
+    return render_template('delete_account_confirmation.html', deleted=deleted)
+
 @app.route('/profile/<string:username>', methods=['GET', 'POST'])
 def profile(username):
     '''Render the profile page of the user.'''

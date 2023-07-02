@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}delete account{% endblock %}
+
+{% block content %}
+<div>
+    <h1>delete {{ session.username }}'s account</h1>
+    <p>are you sure you want to delete your account?</p>
+    <form action="{{ url_for('delete_account_check')}}" method="post">
+        <label for="confirm-checkbox">
+            <input type="checkbox" name="confirm" id="confirm-checkbox">
+            yes, delete my account
+        </label>
+        <br>
+        <label for="password">password:</label>
+        <input type="password" name="password" required>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">delete account</button>
+    </form>
+</div>
+{% endblock %}

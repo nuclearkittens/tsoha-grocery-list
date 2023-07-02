@@ -26,10 +26,6 @@ def login(username, password, err=list()):
         WHERE username=:username AND activated=TRUE
         '''
     )
-    # try:
-    #     user = db.session.execute(query, {'username': username}).fetchone()
-    # except:
-    #     user = None
     res = db.session.execute(query, {'username': username}).fetchone()
     user = res if res else None
 
@@ -92,6 +88,23 @@ def register(username, password):
             err.append('username_already_exists')
 
     return (registered, err)
+
+def delete_account(user_id, password):
+    '''Hides the user account from database and logs the user out,
+    returning a boolean value depending on whether the operation
+    was successful.
+    '''
+    query = text('SELECT password FROM users WHERE id=:user_id')
+    hashed_pw = db.session.execute(query, {'user_id': user_id}).fetchone()[0]
+
+    if check_password_hash(hashed_pw, password):
+        query = text('UPDATE users SET activated=FALSE WHERE id=:user_id')
+        db.session.execute(query, {'user_id': user_id})
+        db.session.commit()
+        logout()
+        return True
+
+    return False
 
 def get_user_id():
     '''Return the user id used in the current session.'''

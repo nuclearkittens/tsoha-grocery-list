@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}account deletion{% endblock %}
+
+{% block content %}
+<div>
+    {% if deleted %}
+    <h1>account deleted</h1>
+    <p>your account has been successfully deleted!</p>
+    {% else %}
+    <h1>account not deleted</h1>
+    <p>your account was not deleted.</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">back to home page</a>
+</div>
+{% endblock %}

@@ -54,6 +54,10 @@ There is still a long way to go before the project is finished. I aim to add lis
 
 ### *update 02/07/2023*
 
++ editing existing lists
++ lists can be shared
++ fixed deletion msg error
++ user account deletion
 
 ***
 
