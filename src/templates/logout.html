@@ -6,8 +6,6 @@
 {% block content %}
 <div>
     <h1>logout</h1>
-    <p>[this be the logout page]</p>
-
     {% if session.user_id %}
     <form action="{{ url_for('logout_check')}} " method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

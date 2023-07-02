@@ -6,16 +6,13 @@
 {% block content %}
 <div>
     <h1>{{ session.username }}'s profile</h1>
+    <p><a href="{{ url_for('new_list') }}">create a new list</a></p>
+    <p><a href="{{ url_for('delete_account') }}">delete my account</a></p>
     <h2>{{ session.username }}'s saved grocery lists</h2>
 
     {% if not grocery_lists %}
     <p>you don't have any saved grocery lists ):</p>
     {% endif %}
-
-    <div>
-        <a href="{{ url_for('new_list') }}">create a new list</a>
-    </div>
-
     {% if grocery_lists %}
     <div>
         <ul>
@@ -29,9 +26,5 @@
         </ul>
     </div>
     {% endif %}
-    <div>
-        <a href="{{ url_for('delete_account') }}">delete my account</a>
-    </div>
-
 </div>
 {% endblock %}

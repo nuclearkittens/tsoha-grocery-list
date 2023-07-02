@@ -45,7 +45,7 @@
     <h1>edit {{ list_name }}</h1>
     <form action="{{ url_for('submit_edits') }}" method="post">
         <div>
-            <label for="list_name">list name</label>
+            <label for="list_name">list name: </label>
             <input type="text" name="list_name" id="list_name" value="{{ list_name }}" required>
             <input type="hidden" name="list_id" value="{{ list_id }}">
         </div>

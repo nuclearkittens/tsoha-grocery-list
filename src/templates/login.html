@@ -6,10 +6,8 @@
 {% block content %}
 <div>
     <h1>login</h1>
-    <p>[this be the login page]</p>
-
     {% if session.user_id %}
-    <p>you are already logged in as <b>{{ session.username }}</b>!</p>
+    <p>you are logged in as <b>{{ session.username }}</b>!</p>
     {% else %}
     <p>no account? <a href="{{ url_for('register') }}">register</a></p>
     <form action="{{ url_for('login_check') }}" method="post">

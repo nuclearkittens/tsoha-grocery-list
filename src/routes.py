@@ -96,6 +96,7 @@ def delete_account():
 
 @app.route('/delete_account_check', methods=['POST'])
 def delete_account_check():
+    '''Delete the user account.'''
     user_id = users.get_user_id()
     password = request.form.get('password')
     confirm = request.form.get('confirm')
@@ -163,7 +164,7 @@ def edit_list():
 
     if groceries.check_authorisation(user_id, list_id):
         list_items = groceries.get_list_items(list_id)
-        list_name, _ = groceries.get_list_info(list_id)
+        list_name, _, _ = groceries.get_list_info(list_id)
         return render_template(
             'edit_list.html', list_id=list_id, list_name=list_name,
             list_items=list_items, categories=categories,

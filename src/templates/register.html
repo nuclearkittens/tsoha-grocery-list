@@ -6,8 +6,6 @@
 {% block content %}
 <div>
     <h1>registration</h1>
-    <p>[this be the registration page]</p>
-
     {% if session.user_id %}
     <p>you have already registered and are logged in as <b>{{ session.username }}</b>!</p>
     {% else %}
