@@ -17,14 +17,10 @@
             counter++;
             var newItem = `
                 <div class="item">
-                    <label for="item${counter}">item:</label>
-                    <input type="text" name="item_name[]" id="item${counter}" required>
-                    <label for="quantity${counter}">quantity:</label>
-                    <input type="number" name="quantity[]" id="quantity${counter}" required>
-                    <label for="uom${counter}">unit:</label>
-                    <input type="text" name="uom[]" id="uom${counter}" required>
-                    <label for="category${counter}">category:</label>
-                    <select name="category[]" id="category${counter}" required>
+                    <input type="text" name="item_name[]" id="item${counter}" placeholder="item" required>
+                    <input type="number" name="quantity[]" id="quantity${counter}" placeholder="qty" min="0" required>
+                    <input type="text" name="uom[]" id="uom${counter}" placeholder="unit" required>
+                    <select name="category[]" id="category${counter}" aria-placeholder="category" required>
                         {% for category in categories %}
                             <option value="{{ category }}">{{ category }}</option>
                         {% endfor %}
@@ -53,7 +49,7 @@
             {% for item in list_items %}
             <div class="item">
                 <input type="text" name="item_name[]" value="{{ item['name'] }}" readonly>
-                <input type="number" name="quantity[]" value="{{ item['quantity'] }}">
+                <input type="number" name="quantity[]" value="{{ item['quantity'] }}" min="0">
                 <input type="text" name="uom[]" id="{{ item['uom'] }}" value="{{ item['uom'] }}" readonly>
                 <input type="text" name="category[]" id="{{ item['category'] }}" value="{{ item['category'] }}" readonly>
                 <input type="checkbox" name="deleted[]" value="{{ item['id'] }}">
