@@ -152,7 +152,7 @@ def delete_list_check():
     if confirm == 'on':
         groceries.delete_list(list_id)
         return render_template('delete_list_confirmation.html', deleted=True)
-    elif confirm == 'off':
+    elif confirm != 'on':
         return render_template('delete_list_confirmation.html', deleted=False)
     else:
         return redirect(url_for('error', message='list_deletion_failed'))

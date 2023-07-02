@@ -30,18 +30,18 @@ CREATE TABLE items (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     uom TEXT NOT NULL, -- unit of measurement
-    cat_id INTEGER REFERENCES categories ON DELETE RESTRICT
+    cat_id INTEGER REFERENCES categories ON DELETE SET NULL
 );
 
 CREATE TABLE grocery_list (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users ON DELETE RESTRICT,
+    user_id INTEGER REFERENCES users ON DELETE SET NULL,
     created_at TIMESTAMP WITH TIME ZONE,
     name TEXT
 );
 
 CREATE TABLE grocery_list_items (
-    item_id INTEGER REFERENCES items ON DELETE RESTRICT,
+    item_id INTEGER REFERENCES items ON DELETE CASCADE,
     list_id INTEGER REFERENCES grocery_list ON DELETE CASCADE,
     quantity INTEGER,
     UNIQUE (item_id, list_id)
