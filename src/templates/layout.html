@@ -1,28 +1,32 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="/static/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <html>
     <head>
         <title>grocery list app – {% block title %} {% endblock %}</title>
         {% block script %} {% endblock %}
     </head>
     <body>
-        <header>
-            <h1>[this be the header]</h1>
-        </header>
-        <nav class="menu">
-            <ul>
-                <li><a href="{{ url_for('index') }}">home</a></li>
-                <li><a href="{{ url_for('new_list') }}">create a new grocery list</a></li>
-                {% if session.user_id %}
-                <li><a href="{{ url_for('profile', username=session.username) }}">my grocery lists</a></li>
-                <li><a href="{{ url_for('logout') }}">log out {{ session.username }}</a></li>
-                {% else %}
-                <li><a href="{{ url_for('login') }}">log in/register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        <hr>
-        {% block content %} {% endblock %}
-        <hr>
+        <div class="container">
+            <aside id="sidebar">
+                <img src="/static/food.jpeg" id="side-img" alt="tofu dish"/></a>
+                <div class="title"><a href="/">grocery list app</a></div>
+                <div id="description">This is a description. Lorem ipsum dolor sit amet.</div>
+                <nav>
+                    <a href="{{ url_for('index') }}">home</a>
+                    <a href="{{ url_for('new_list') }}">create a new grocery list</a>
+                    {% if session.user_id %}
+                    <a href="{{ url_for('profile', username=session.username) }}">my grocery lists</a>
+                    <a href="{{ url_for('logout') }}">log out {{ session.username }}</a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}">log in/register</a>
+                    {% endif %}
+                </nav>
+            </aside>
+            <section>
+                {% block content %}{% endblock %}
+            </section>
+        </div>
         <footer>
             <p>Coursework for Database Application Project, University of Helsinki, Summer 2023</p>
         </footer>
