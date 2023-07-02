@@ -8,7 +8,7 @@
 <script>
     $(document).ready(function () {
         var counter = Number("{{ item_count }}");
-        var maxItems = 5;
+        var maxItems = 64;
         function addFormField() {
             if (counter >= maxItems) {
                 $('#max-items-message').text('cannot add more than (' + maxItems + ') items.');
@@ -53,7 +53,7 @@
             {% for item in list_items %}
             <div class="item">
                 <input type="text" name="item_name[]" value="{{ item['name'] }}" readonly>
-                <input type="number" name="item_quantity[]" value="{{ item['quantity'] }}">
+                <input type="number" name="quantity[]" value="{{ item['quantity'] }}">
                 <input type="text" name="uom[]" id="{{ item['uom'] }}" value="{{ item['uom'] }}" readonly>
                 <input type="text" name="category[]" id="{{ item['category'] }}" value="{{ item['category'] }}" readonly>
                 <input type="checkbox" name="deleted[]" value="{{ item['id'] }}">
